@@ -2,14 +2,14 @@ import csv
 from moviepy.editor import VideoFileClip
 
 #Ruta al archivo del video a cortar
-VIDEO: str = r"Recursos\w_LSA_202209_04_r720P.mp4"
+VIDEO: str = r"Recursos\w_LSA_202211_01_r720P.mp4"
 #Tabla con la información de los cortes
-TABLA: str = r"Recursos\Tiempos - 1_0.csv"
+TABLA: str = r"Recursos\Tiempos.csv"
+#Prefijo de todos los archivos creados
+PREFIJO: str = "W"
 
 #Carpeta en la que guardar los clips
 RUTA_DESTINO: str = "Clips"+"/"
-#Prefijo de todos los archivos creados
-PREFIJO: str = "W"
 #Extension de los videos a crear
 EXTENSION: str = ".mp4"
 
@@ -64,8 +64,20 @@ def obtener_parametros(ruta: str) -> list[subclip]:
 
 if __name__=="__main__":
     clips = obtener_parametros(TABLA)
+    nombreError = []
     with VideoFileClip(VIDEO) as ORIGINAL:
         for corte in clips:
-            corte.aplicar_corte(ORIGINAL)
-            corte.clip.write_videofile(RUTA_DESTINO+corte.nombre+EXTENSION)
-            corte.clip.close()
+            try:
+                corte.aplicar_corte(ORIGINAL)
+                corte.clip.write_videofile(RUTA_DESTINO+corte.nombre+EXTENSION)
+            except:
+                nombreError.append(corte.nombre)
+                
+                
+                print("Salio mal",nombreError)
+                break
+
+
+            finally:
+                corte.clip.close()
+            print(nombreError)
