@@ -1,5 +1,5 @@
 from moviepy.editor import VideoFileClip
-from constants import RUTA_DEL_VIDEO_ENTERO, RUTA_DESTINO
+from constants import RUTA_DEL_VIDEO_ENTERO, RUTA_DESTINO,RUTA_DESTINO_DE_LISTA
 
 class subclip():
     """
@@ -36,7 +36,7 @@ def listado(path:str)-> list[subclip]:
 if __name__ == "__main__":
     errores = []
     with VideoFileClip(RUTA_DEL_VIDEO_ENTERO) as ORIGINAL:
-        for corte in listado("Recursos/Tiempos - 1_0.csv"):
+        for corte in listado(RUTA_DESTINO_DE_LISTA):
             try:
                 corte.aplicar_corte(ORIGINAL, RUTA_DESTINO)
             except Exception as e:

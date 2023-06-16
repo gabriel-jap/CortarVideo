@@ -1,12 +1,11 @@
 import subprocess
 import json
-import os.path
 
 from constants import RUTA_DESTINO_DE_LISTA,RUTA_DEL_VIDEO_ENTERO
 
 def get_timestamps (video: str) -> list[dict] :
         listado = list()
-        exe_out=subprocess.run([os.path.join("Recursos","ffprobe.exe"),"-i", video ,"-print_format", "json", "-show_chapters", "-loglevel", "error"],capture_output=True)
+        exe_out=subprocess.run(["ffprobe.exe","-i", video ,"-print_format", "json", "-show_chapters", "-loglevel", "error"],capture_output=True)
         chapters = json.loads(exe_out.stdout)["chapters"]
         for nro,chapter in enumerate(chapters,start=1):
             start = chapter["start_time"]
